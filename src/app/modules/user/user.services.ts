@@ -13,8 +13,9 @@ const createUserIntoDB = async (data: TUser) => {
 
 // getAll data
 const getAllUsersFromDB = async () => {
-  const result = await UserModel.find();
-  return result;
+  const users = await UserModel.find().exec(); // Retrieve all users
+  const totalUsers = await UserModel.countDocuments().exec(); // Count total users
+  return { users, totalUsers };
 };
 
 // getSingle task

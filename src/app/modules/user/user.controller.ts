@@ -34,17 +34,18 @@ const createUser = async (req: Request, res: Response) => {
 // Get-All
 const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const result = await UserServices.getAllUsersFromDB();
-    //sending response
+    const { users, totalUsers } = await UserServices.getAllUsersFromDB();
     res.status(200).json({
       success: true,
-      message: "user data retrieved successfully ✔",
-      data: result,
+      message: "User data retrieved successfully ✔",
+    
+      totalUsers: totalUsers,
+      data: users,
     });
   } catch (error: any) {
     res.status(500).json({
-      success: true,
-      message: "something went wrong !!! ",
+      success: false,
+      message: "Something went wrong !!!",
       error: error.message,
     });
   }

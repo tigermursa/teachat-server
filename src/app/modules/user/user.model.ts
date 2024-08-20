@@ -3,11 +3,11 @@ import { TUser, UserWithStatic } from "./user.interface";
 
 // Tasks Schema here
 const userSchema = new Schema<TUser, UserWithStatic>({
-  userID: { type: String, required: true, unique: true },
+    userID: { type: String, required: true, unique: true },
   name: { type: String, required: true },
-  userImage: { type: String, required: true, unique: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   location: { type: String, required: true },
+  userImage: { type: String, required: true },
   gender: { type: String, enum: ["male", "female"], required: true },
   age: { type: String, required: true },
   work: { type: String, required: true },
