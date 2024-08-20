@@ -51,19 +51,33 @@ const deleteUserFromDB = async (_id: string) => {
 };
 
 //update
+
 const updateUserFromDB = async (
   _id: string | ObjectId,
   updatedData: Partial<TUser>
 ) => {
   try {
-    const result = await UserModel.updateOne({ _id }, { $set: updatedData });
+    if (!mongoose.Types.ObjectId.isValid(_id as string)) {
+      return { matchedCount: 0 }; // Return no match if ID is invalid
+    }
+
+    // Check if the user exists
+    const userExists = await UserModel.findById(_id).exec();
+    if (!userExists) {
+      return { matchedCount: 0 }; // Return no match if user does not exist
+    }
+
+    // Perform the update
+    const result = await UserModel.updateOne(
+      { _id },
+      { $set: updatedData }
+    ).exec();
     return result;
   } catch (error: any) {
-    console.error("error updating user:", error.message);
-    throw new Error("error updating user: " + error.message);
+    console.error("Error updating user:", error.message);
+    throw new Error("Error updating user: " + error.message);
   }
 };
-
 //exports:
 export const UserServices = {
   createUserIntoDB,

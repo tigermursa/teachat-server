@@ -38,7 +38,7 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "User data retrieved successfully ✔",
-    
+
       totalUsers: totalUsers,
       data: users,
     });
@@ -111,7 +111,14 @@ const updateUser = async (req: Request, res: Response) => {
     const userId = req.params.id;
     const updatedData = req.body;
     const result = await UserServices.updateUserFromDB(userId, updatedData);
-    //sending response
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid ID or user does not exist",
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: "User updated successfully!",
@@ -120,7 +127,7 @@ const updateUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: "something went wrong while updating the User!",
+      message: "Something went wrong while updating the user!",
       error: error.message,
     });
   }
