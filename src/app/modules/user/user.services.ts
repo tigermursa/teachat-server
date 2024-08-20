@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import { TUser } from "./user.interface";
 import UserModel from "./user.model";
 
@@ -18,10 +18,19 @@ const getAllUsersFromDB = async () => {
   return { users, totalUsers };
 };
 
-// getSingle task
+// getSingle user
 const getSingleUserFromDB = async (id: string) => {
-  const result = await UserModel.findOne({ _id: id });
-  return result;
+  try {
+    // Validate if the ID is a valid MongoDB ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return null;
+    }
+
+    const result = await UserModel.findOne({ _id: id }).exec();
+    return result;
+  } catch (error) {
+    throw new Error("Error retrieving user from database");
+  }
 };
 
 // delete

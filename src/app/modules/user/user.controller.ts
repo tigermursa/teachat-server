@@ -56,16 +56,23 @@ const getSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
     const result = await UserServices.getSingleUserFromDB(userId);
-    //sending response
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid ID or user does not exist",
+      });
+    }
+
     res.status(200).json({
       success: true,
-      message: "single user retrieved successfully ✔ ",
+      message: "Single user retrieved successfully ✔",
       data: result,
     });
   } catch (error: any) {
     res.status(500).json({
-      success: true,
-      message: "something went wrong !!! ",
+      success: false,
+      message: "Something went wrong !!!",
       error: error.message,
     });
   }
