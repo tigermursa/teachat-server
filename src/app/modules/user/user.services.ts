@@ -35,7 +35,18 @@ const getSingleUserFromDB = async (id: string) => {
 
 // delete
 const deleteUserFromDB = async (_id: string) => {
-  const result = await UserModel.updateOne({ _id }, { isDeleted: true });
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return { matchedCount: 0 }; // Return no match if ID is invalid
+  }
+
+  // Check if the user exists
+  const userExists = await UserModel.findById(_id).exec();
+  if (!userExists) {
+    return { matchedCount: 0 }; // Return no match if user does not exist
+  }
+
+  // Mark user as deleted
+  const result = await UserModel.updateOne({ _id }, { isDeleted: true }).exec();
   return result;
 };
 

@@ -83,16 +83,23 @@ const deleteUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
     const result = await UserServices.deleteUserFromDB(userId);
-    //sending response
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid ID or user does not exist",
+      });
+    }
+
     res.status(200).json({
       success: true,
-      message: "user deleted successfully!",
+      message: "User deleted successfully!",
       data: result,
     });
   } catch (error: any) {
     res.status(500).json({
-      success: true,
-      message: "something went wrong !!! ",
+      success: false,
+      message: "Something went wrong !!!",
       error: error.message,
     });
   }
