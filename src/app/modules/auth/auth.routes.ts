@@ -1,6 +1,5 @@
 import express from "express";
 import { AuthController } from "./auth.controller";
-import { verifyToken } from "../../middlewares/verifyJWT";
 
 const router = express.Router();
 
@@ -8,7 +7,7 @@ const router = express.Router();
 router.post("/signup", AuthController.signup);
 
 // Login route
-router.post("/login", verifyToken, AuthController.login);
+router.post("/login", AuthController.login);
 
 // Logout route
 router.post("/logout", AuthController.logout);

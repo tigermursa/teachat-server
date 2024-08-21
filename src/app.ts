@@ -10,7 +10,14 @@ const app = express();
 // Parsers
 app.use(express.json()); // JSON parser
 app.use(cookieParser()); // Cookie parser
-app.use(cors());
+
+// CORS setup
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace this with your frontend URL
+    credentials: true, // This allows the browser to send cookies with the requests
+  })
+);
 
 // Application routes:
 app.use("/api/v2/user", UserRoutes); // Users
