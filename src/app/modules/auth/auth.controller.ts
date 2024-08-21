@@ -11,7 +11,6 @@ export async function signup(
   next: NextFunction
 ): Promise<Response | void> {
   const {
-    userID,
     name,
     email,
     password,
@@ -40,7 +39,6 @@ export async function signup(
 
     // Create user data
     const userData: Partial<TUser> = {
-      userID,
       name,
       email,
       password: hashedPassword,
@@ -57,14 +55,14 @@ export async function signup(
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: newUser.userID },
+      { id: newUser._id },
       process.env.JWT_SECRET as string
     );
 
     // Set HTTP-only cookie and respond with success message
     res.cookie("access_token", token, { httpOnly: true }).status(201).json({
       message: "User registered successfully!",
-      _id: newUser.userID,
+      _id: newUser._id,
       name: newUser.name,
       email: newUser.email,
       userImage: newUser.userImage,
@@ -96,14 +94,14 @@ export async function login(
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: validUser.userID },
+      { id: validUser._id },
       process.env.JWT_SECRET as string
     );
 
     // Set HTTP-only cookie and respond with success message
     res.cookie("access_token", token, { httpOnly: true }).status(200).json({
       message: "User logged in successfully!",
-      _id: validUser.userID,
+      _id: validUser._id,
       name: validUser.name,
       email: validUser.email,
       userImage: validUser.userImage,

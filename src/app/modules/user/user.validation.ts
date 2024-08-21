@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 const UserValidationZodSchema = z.object({
-    userID: z.string().min(1, { message: "UserID is required" }),
     name: z.string().min(4, { message: "Name must be at least 4 characters long" }),
     userImage: z.string(),
     email: z.string().email({ message: "Invalid email format" }),

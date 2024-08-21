@@ -6,7 +6,7 @@ export interface UserWithStatic extends Model<TUser> {
 }
 
 export type TUser = {
-  userID: string;
+  _id: string;
   name: string;
   email: string;
   location: string;
