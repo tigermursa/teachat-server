@@ -61,8 +61,7 @@ export async function signup(
     );
 
     // Set HTTP-only, Secure, and SameSite cookie
-    res
-      .cookie("access_token", token, {
+    res.cookie("access_token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Set 'secure' in production
         sameSite: "lax", // Controls sending of cookies with cross-site requests
@@ -107,8 +106,7 @@ export async function login(
     );
 
     // Set HTTP-only, Secure, and SameSite cookie
-    res
-      .cookie("access_token", token, {
+    res.cookie("access_token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Set 'secure' in production
         sameSite: "lax", // Controls sending of cookies with cross-site requests
