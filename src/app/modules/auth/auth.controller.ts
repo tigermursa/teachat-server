@@ -5,6 +5,7 @@ import { AuthService } from "./auth.services";
 import { TUser } from "../user/user.interface";
 import { CustomError } from "../../errors/CustomError";
 
+// the signup api
 export async function signup(
   req: Request,
   res: Response,
@@ -59,14 +60,21 @@ export async function signup(
       process.env.JWT_SECRET as string
     );
 
-    // Set HTTP-only cookie and respond with success message
-    res.cookie("access_token", token, { httpOnly: true }).status(201).json({
-      message: "User registered successfully!",
-      _id: newUser._id,
-      name: newUser.name,
-      email: newUser.email,
-      userImage: newUser.userImage,
-    });
+    // Set HTTP-only, Secure, and SameSite cookie
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Set 'secure' in production
+        sameSite: "lax", // Controls sending of cookies with cross-site requests
+      })
+      .status(201)
+      .json({
+        message: "User registered successfully!",
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        userImage: newUser.userImage,
+      });
   } catch (error) {
     next(error);
   }
@@ -98,14 +106,21 @@ export async function login(
       process.env.JWT_SECRET as string
     );
 
-    // Set HTTP-only cookie and respond with success message
-    res.cookie("access_token", token, { httpOnly: true }).status(200).json({
-      message: "User logged in successfully!",
-      _id: validUser._id,
-      name: validUser.name,
-      email: validUser.email,
-      userImage: validUser.userImage,
-    });
+    // Set HTTP-only, Secure, and SameSite cookie
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Set 'secure' in production
+        sameSite: "lax", // Controls sending of cookies with cross-site requests
+      })
+      .status(200)
+      .json({
+        message: "User logged in successfully!",
+        _id: validUser._id,
+        name: validUser.name,
+        email: validUser.email,
+        userImage: validUser.userImage,
+      });
   } catch (error) {
     next(error);
   }
@@ -117,7 +132,11 @@ export async function logout(
   next: NextFunction
 ): Promise<Response | void> {
   try {
-    res.clearCookie("access_token");
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Clear 'secure' cookie in production
+      sameSite: "lax",
+    });
     res.status(200).json({
       message: "User has been logged out successfully!",
     });

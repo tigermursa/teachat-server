@@ -2,15 +2,6 @@ import mongoose, { ObjectId } from "mongoose";
 import { TUser } from "./user.interface";
 import UserModel from "./user.model";
 
-//post
-const createUserIntoDB = async (data: TUser) => {
-  if (await UserModel.isUserExists(data.email)) {
-    throw new Error("This email already exist!");
-  }
-  const result = await UserModel.create(data); //builtin static method using
-  return result;
-};
-
 // getAll data
 const getAllUsersFromDB = async () => {
   const users = await UserModel.find().exec(); // Retrieve all users
@@ -80,7 +71,6 @@ const updateUserFromDB = async (
 };
 //exports:
 export const UserServices = {
-  createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   deleteUserFromDB,

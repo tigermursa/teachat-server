@@ -1,35 +1,9 @@
 import { Request, Response } from "express";
 import { handleZodErrorMessage } from "../../errors/handleZodErrorMessage";
 import { UserServices } from "./user.services";
-import UserValidationZodSchema from "./user.validation";
 
-// Create
-const createUser = async (req: Request, res: Response) => {
-  try {
-    //data will come into body
-    const sites = req.body;
-    //will call services
-    const zodErrorData = UserValidationZodSchema.safeParse(sites);
-    if (!zodErrorData.success) {
-      //  Zod error messages here
-      const errorMessage = handleZodErrorMessage(zodErrorData.error);
-      throw new Error(errorMessage);
-    }
-    const result = await UserServices.createUserIntoDB(zodErrorData.data);
-    //sending response
-    res.status(200).json({
-      success: true,
-      message: "user created successfully!",
-      data: result,
-    });
-  } catch (err: any) {
-    res.status(200).json({
-      success: false,
-      message: "something went wrong while creating user !",
-      error: err.message,
-    });
-  }
-};
+
+
 
 // Get-All
 const getAllUsers = async (req: Request, res: Response) => {
@@ -134,7 +108,6 @@ const updateUser = async (req: Request, res: Response) => {
 };
 
 export const UsersController = {
-  createUser,
   getAllUsers,
   getSingleUser,
   deleteUser,

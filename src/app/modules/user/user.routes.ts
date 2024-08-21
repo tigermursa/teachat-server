@@ -5,7 +5,6 @@ import { UsersController } from "./user.controller";
 const router = express.Router();
 
 //crud end points
-router.post("/create", UsersController.createUser);
 router.get("/get", UsersController.getAllUsers);
 router.get("/:id", UsersController.getSingleUser);
 router.delete("/:id", UsersController.deleteUser);
