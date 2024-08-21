@@ -6,41 +6,26 @@ import { errorHandler } from "./app/middlewares/ErrorHandler";
 
 const app = express();
 
+// Configure CORS
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions)); // Apply CORS middleware
+
 // Parsers
 app.use(express.json()); // JSON parse will happen
-app.use(cors());
 
 // Application routes:
-// app.use('/api/v1/task', TaskRoutes); //Task
-app.use("/api/v2/user", UserRoutes); //Users
-// app.use('/user', AuthRoutes);       //Login
+app.use("/api/v2/user", UserRoutes); // Users
 app.use("/auth", AuthRoutes);
+
 app.use(errorHandler);
+
 app.get("/", (req, res) => {
-  res.send(`
-    <html>
-      <head>
-        <style>
-          body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-          }
-          .container {
-            text-align: center;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <h1>✔ Tea Chat Server Running Successfully  🦍</h1>
-        </div>
-      </body>
-    </html>
-  `);
+  res.send(`SERVER WORKING`);
 });
 
 export default app;
