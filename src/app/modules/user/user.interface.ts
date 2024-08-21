@@ -1,6 +1,7 @@
 import { Model } from "mongoose";
 
 export interface UserWithStatic extends Model<TUser> {
+  createUser(userData: Partial<TUser>): unknown;
   isUserExists(id: string): Promise<TUser | null>;
 }
 

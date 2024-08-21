@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { UserRoutes } from "./app/modules/user/user.routes";
+import { AuthRoutes } from "./app/modules/auth/auth.routes";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 // app.use('/api/v1/task', TaskRoutes); //Task
 app.use("/api/v2/user", UserRoutes); //Users
 // app.use('/user', AuthRoutes);       //Login
+app.use("/auth", AuthRoutes);
 
 app.get("/", (req, res) => {
   res.send(`
