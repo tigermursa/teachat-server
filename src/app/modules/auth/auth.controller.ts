@@ -3,7 +3,7 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { AuthService } from "./auth.services";
 import { TUser } from "../user/user.interface";
-import { errorHandler } from "../../errors/ErrorHandler";
+import { CustomError } from "../../errors/CustomError";
 
 export async function signup(
   req: Request,
@@ -27,12 +27,12 @@ export async function signup(
     // Check if user already exists
     const validUser = await AuthService.findUserByEmail(email);
     if (validUser) {
-      return next(errorHandler(400, "User already exists"));
+      throw new CustomError("User already exists", 400);
     }
 
     // Check if passwords match
     if (password !== confirmPassword) {
-      return next(errorHandler(400, "Passwords don't match"));
+      throw new CustomError("Passwords don't match", 400);
     }
 
     // Hash the password
@@ -85,13 +85,13 @@ export async function login(
     // Find user by email
     const validUser = await AuthService.findUserByEmail(email);
     if (!validUser) {
-      return next(errorHandler(404, "User not found"));
+      throw new CustomError("User not found", 404);
     }
 
     // Check if the password matches
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) {
-      return next(errorHandler(401, "Wrong credentials"));
+      throw new CustomError("Wrong credentials", 401);
     }
 
     // Generate JWT token

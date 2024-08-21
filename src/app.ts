@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { UserRoutes } from "./app/modules/user/user.routes";
 import { AuthRoutes } from "./app/modules/auth/auth.routes";
+import { errorHandler } from "./app/middlewares/ErrorHandler";
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(cors());
 app.use("/api/v2/user", UserRoutes); //Users
 // app.use('/user', AuthRoutes);       //Login
 app.use("/auth", AuthRoutes);
-
+app.use(errorHandler);
 app.get("/", (req, res) => {
   res.send(`
     <html>
