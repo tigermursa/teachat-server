@@ -24,17 +24,18 @@ export async function login(
       throw new CustomError("Wrong credentials", 401);
     }
 
-    // Generate JWT token
+    // Generate JWT token with expiration
     const token = jwt.sign(
       { id: validUser._id },
-      process.env.JWT_SECRET as string
+      process.env.JWT_SECRET as string,
+      { expiresIn: process.env.EXPIRES_IN } // Token expires in  2d
     );
 
-    // Set HTTP-only, Secure, and SameSite cookie
+    // Set HTTP-only, Secure,
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Set 'secure' in production
+        secure: true, // Set 'secure' to true in production
         sameSite: "lax", // Controls sending of cookies with cross-site requests
       })
       .status(200)

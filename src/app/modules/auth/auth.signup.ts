@@ -56,7 +56,8 @@ export async function signup(
     // Generate JWT token
     const token = jwt.sign(
       { id: newUser._id },
-      process.env.JWT_SECRET as string
+      process.env.JWT_SECRET as string,
+      { expiresIn: process.env.EXPIRES_IN }
     );
 
     // Set HTTP-only, Secure, and SameSite cookie
