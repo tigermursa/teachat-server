@@ -64,8 +64,8 @@ export async function signup(
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Set 'secure' in production
-        sameSite: "lax", // Controls sending of cookies with cross-site requests
+        secure: true ,// Set 'secure' to true in production
+        sameSite: "none" // Adjust sameSite for production
       })
       .status(201)
       .json({

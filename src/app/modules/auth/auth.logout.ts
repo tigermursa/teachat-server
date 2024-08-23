@@ -8,8 +8,8 @@ export async function logout(
   try {
     res.clearCookie("access_token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Clear 'secure' cookie in production
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none", 
     });
     res.status(200).json({
       message: "User has been logged out successfully!",

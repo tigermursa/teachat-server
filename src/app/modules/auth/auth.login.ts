@@ -35,8 +35,8 @@ export async function login(
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        secure: true, // Set 'secure' to true in production
-        sameSite: "none", // Controls sending of cookies with cross-site requests
+        secure: true ,// Set 'secure' to true in production
+        sameSite: "none" 
       })
       .status(200)
       .json({
