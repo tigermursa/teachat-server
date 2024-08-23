@@ -14,7 +14,7 @@ app.use(cookieParser()); // Cookie parser
 // CORS setup
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace this with your frontend URL
+    origin: "https://teachat-client.vercel.app", // Replace this with your frontend URL
     credentials: true, // This allows the browser to send cookies with the requests
   })
 );
