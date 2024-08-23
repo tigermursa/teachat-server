@@ -101,7 +101,7 @@ const updateUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: "Something went wrong while updating the user!",
+      message: "Please try with another email ",
       error: error.message,
     });
   }
