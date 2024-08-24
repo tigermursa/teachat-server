@@ -1,11 +1,10 @@
 import { Server, Socket } from "socket.io";
-import { Document, Model } from "mongoose";
+import { Document } from "mongoose";
 import UserModel from "../modules/user/user.model";
-
 
 // Define the shape of a User document from Mongoose
 interface IUser extends Document {
-  name: string;
+  username: string;
   email: string;
 }
 
@@ -23,7 +22,9 @@ const findUserById = (userId: string): SocketUser | undefined =>
   users.find((user) => user.userId === userId);
 
 // Helper function to broadcast updated users list
-const broadcastUsersList = (io: Server): any => io.emit("getUsers", users);
+const broadcastUsersList = (io: Server): void => {
+  io.emit("getUsers", users);
+};
 
 // Initialize Socket.io
 const initializeSocket = (io: Server): void => {
@@ -62,7 +63,7 @@ const initializeSocket = (io: Server): void => {
           }
 
           const user: IUser | null = await UserModel.findById(senderId).select(
-            "fullName email"
+            "username email"
           );
 
           if (!user) {
@@ -77,7 +78,7 @@ const initializeSocket = (io: Server): void => {
             receiverId,
             user: {
               id: user._id,
-              username: user?.name,
+              username: user.username,
               email: user.email,
             },
           };
@@ -96,6 +97,18 @@ const initializeSocket = (io: Server): void => {
 
     // Handle user disconnection
     socket.on("disconnect", () => {
+      const disconnectedUser = users.find(
+        (user) => user.socketId === socket.id
+      );
+
+      if (disconnectedUser) {
+        console.log(
+          `😔 User disconnected! UserId: ${disconnectedUser.userId}, SocketId: ${socket.id}`
+        );
+      } else {
+        console.log(`😔 User disconnected: ${socket.id}`);
+      }
+
       users = users.filter((user) => user.socketId !== socket.id);
       broadcastUsersList(io);
     });

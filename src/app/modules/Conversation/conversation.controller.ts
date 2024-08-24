@@ -3,6 +3,9 @@ import Conversation from "./conversation.model";
 import UserModel from "../user/user.model";
 import { TUser } from "../user/user.interface";
 
+
+
+
 interface IConversation {
   _id: string;
   members: string[];
@@ -63,26 +66,28 @@ const getUserConversations = async (
         async (
           conversation
         ): Promise<{
-          user: { receiverId: string; email: string; username: string };
+          user: { receiverId: string; email: string; name: string } | null;
           conversationId: string;
         }> => {
           const receiverId = conversation.members.find(
             (member) => member !== userId
           ) as string;
 
-          const user: TUser | null = await UserModel.findById(
-            receiverId
-          ).lean();
+          const user: TUser | null = await UserModel.findById(receiverId).lean();
 
           if (!user) {
-            throw new Error(`User with ID ${receiverId} not found`);
+            console.warn(`User with ID ${receiverId} not found, skipping.`);
+            return {
+              user: null, // Return null or handle the missing user case accordingly
+              conversationId: conversation._id,
+            };
           }
 
           return {
             user: {
               receiverId: user._id,
               email: user.email,
-              username: user.name,
+              name: user.name,
             },
             conversationId: conversation._id,
           };
@@ -90,7 +95,12 @@ const getUserConversations = async (
       )
     );
 
-    return res.status(200).json(conversationUserData);
+    // Filter out conversations with null users (optional)
+    const filteredConversations = conversationUserData.filter(
+      (data) => data.user !== null
+    );
+
+    return res.status(200).json(filteredConversations);
   } catch (error) {
     console.error("Error fetching conversations:", error);
     return res

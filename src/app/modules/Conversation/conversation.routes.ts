@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/conversation", ConversationController.createConversation);
 router.get(
-  "/conversations/:conversationID",
+  "/conversations/:userId",
   ConversationController.getUserConversations
 );
 
