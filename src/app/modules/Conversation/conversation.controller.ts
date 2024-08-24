@@ -1,15 +1,7 @@
 import { Request, Response } from "express";
 import Conversation from "./conversation.model";
 import UserModel from "../user/user.model";
-
-
-
-
-interface IUser {
-  _id: string;
-  email: string;
-  username: string;
-}
+import { TUser } from "../user/user.interface";
 
 interface IConversation {
   _id: string;
@@ -71,14 +63,16 @@ const getUserConversations = async (
         async (
           conversation
         ): Promise<{
-          user: { receiverId: string; email: string; fullName: string };
+          user: { receiverId: string; email: string; username: string };
           conversationId: string;
         }> => {
           const receiverId = conversation.members.find(
             (member) => member !== userId
           ) as string;
 
-          const user: IUser | null = await UserModel.findById(receiverId).lean();
+          const user: TUser | null = await UserModel.findById(
+            receiverId
+          ).lean();
 
           if (!user) {
             throw new Error(`User with ID ${receiverId} not found`);
@@ -88,7 +82,7 @@ const getUserConversations = async (
             user: {
               receiverId: user._id,
               email: user.email,
-              fullName: user.username,
+              username: user.name,
             },
             conversationId: conversation._id,
           };

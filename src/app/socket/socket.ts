@@ -5,7 +5,7 @@ import UserModel from "../modules/user/user.model";
 
 // Define the shape of a User document from Mongoose
 interface IUser extends Document {
-  username: string;
+  name: string;
   email: string;
 }
 
@@ -77,7 +77,7 @@ const initializeSocket = (io: Server): void => {
             receiverId,
             user: {
               id: user._id,
-              username: user?.username,
+              username: user?.name,
               email: user.email,
             },
           };
