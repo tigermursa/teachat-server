@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import Conversation from "./conversation.model";
 import UserModel from "../user/user.model";
-import { TUser } from "../user/user.interface";
 
 
-
+interface IUser {
+  _id: string;
+  email: string;
+  username: string;
+}
 
 interface IConversation {
   _id: string;
@@ -66,14 +69,14 @@ const getUserConversations = async (
         async (
           conversation
         ): Promise<{
-          user: { receiverId: string; email: string; name: string } | null;
+          user: { receiverId: string; email: string; fullName: string } | null;
           conversationId: string;
         }> => {
           const receiverId = conversation.members.find(
             (member) => member !== userId
           ) as string;
 
-          const user: TUser | null = await UserModel.findById(receiverId).lean();
+          const user: IUser | null = await UserModel.findById(receiverId).lean();
 
           if (!user) {
             console.warn(`User with ID ${receiverId} not found, skipping.`);
@@ -87,7 +90,7 @@ const getUserConversations = async (
             user: {
               receiverId: user._id,
               email: user.email,
-              name: user.name,
+              fullName: user.username,
             },
             conversationId: conversation._id,
           };
