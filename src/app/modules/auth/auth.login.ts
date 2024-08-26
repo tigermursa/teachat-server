@@ -35,14 +35,14 @@ export async function login(
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        secure: true ,// Set 'secure' to true in production
-        sameSite: "none" 
+        secure: true, // Set 'secure' to true in production
+        sameSite: "none",
       })
       .status(200)
       .json({
         message: "User logged in successfully!",
         _id: validUser._id,
-        name: validUser.name,
+        name: validUser.username,
         email: validUser.email,
         userImage: validUser.userImage,
       });

@@ -1,17 +1,16 @@
 import { Model } from "mongoose";
-import UserModel from "../user/user.model";
-import { TUser } from "../user/user.interface";
+import { IUser, User } from "../user/user.model";
 
-export interface UserWithStatic extends Model<TUser> {
-  isUserExists(id: string): Promise<TUser | null>;
+export interface UserWithStatic extends Model<IUser> {
+  isUserExists(id: string): Promise<IUser | null>;
 }
 
-export async function findUserByEmail(email: string): Promise<TUser | null> {
-  return await UserModel.findOne({ email });
+export async function findUserByEmail(email: string): Promise<IUser | null> {
+  return await User.findOne({ email });
 }
 
-export async function createUser(userData: Partial<TUser>): Promise<TUser> {
-  const newUser = new UserModel(userData);
+export async function createUser(userData: Partial<IUser>): Promise<IUser> {
+  const newUser = new User(userData);
   return await newUser.save();
 }
 

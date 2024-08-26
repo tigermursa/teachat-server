@@ -5,11 +5,11 @@ export interface IUser extends Document {
   username: string;
   email: string;
   location: string;
-  password: string | null;
+  password: string;
   gender: string;
   age: string;
   work: string;
-  userImage: string | null;
+  userImage: string;
 }
 
 export type UserModel = Model<IUser>;

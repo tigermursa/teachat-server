@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "./auth.services";
 import { CustomError } from "../../errors/CustomError";
-import { TUser } from "../user/user.interface";
+
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
+import { IUser } from "../user/user.model";
 
 export async function signup(
   req: Request,
@@ -11,7 +12,7 @@ export async function signup(
   next: NextFunction
 ): Promise<Response | void> {
   const {
-    name,
+    username,
     email,
     password,
     confirmPassword,
@@ -38,8 +39,8 @@ export async function signup(
     const hashedPassword = bcryptjs.hashSync(password, 10);
 
     // Create user data
-    const userData: Partial<TUser> = {
-      name,
+    const userData: Partial<IUser> = {
+      username,
       email,
       password: hashedPassword,
       gender,
@@ -47,7 +48,6 @@ export async function signup(
       age,
       work,
       userImage,
-      isDeleted: false,
     };
 
     // Save the user
@@ -64,14 +64,14 @@ export async function signup(
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        secure: true ,// Set 'secure' to true in production
-        sameSite: "none" // Adjust sameSite for production
+        secure: true, // Set 'secure' to true in production
+        sameSite: "none", // Adjust sameSite for production
       })
       .status(201)
       .json({
         message: "User registered successfully!",
         _id: newUser._id,
-        name: newUser.name,
+        name: newUser.username,
         email: newUser.email,
         userImage: newUser.userImage,
       });
