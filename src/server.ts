@@ -17,7 +17,7 @@ async function startServer() {
     // Initialize Socket.io
     const io = new Server(server, {
       cors: {
-        origin: "*", // Allow requests from any origin
+        origin: "*",
         methods: ["GET", "POST"],
       },
     });
