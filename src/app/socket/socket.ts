@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { Document } from "mongoose";
-import UserModel from "../modules/user/user.model";
+import { User } from "../modules/user/user.model";
 
 // Define the shape of a User document from Mongoose
 interface IUser extends Document {
@@ -62,7 +62,7 @@ const initializeSocket = (io: Server): void => {
             return;
           }
 
-          const user: IUser | null = await UserModel.findById(senderId).select(
+          const user: IUser | null = await User.findById(senderId).select(
             "username email"
           );
 

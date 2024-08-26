@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { TUser } from "../user/user.interface";
-import UserModel from "../user/user.model";
+import { IUser, User } from "../user/user.model";
 
 interface UserResponse {
-  email: string;
-  name: string;
-  receiverId: string;
-  userImage: string;
+  user: {
+    email: string;
+    username: string;
+    receiverId: string;
+  };
 }
 
 const getUsers = async (req: Request, res: Response): Promise<void> => {
@@ -14,15 +14,18 @@ const getUsers = async (req: Request, res: Response): Promise<void> => {
     const userId = req.params.userId;
 
     // Fetch users excluding the one with the given userId
-    const users: TUser[] = await UserModel.find({ _id: { $ne: userId } });
+    const users: IUser[] = await User.find({ _id: { $ne: userId } });
 
     // Map through the users to extract relevant data
-    const usersData: UserResponse[] = users.map((user) => ({
-      email: user.email,
-      name: user.name,
-      receiverId: user._id as string,
-      userImage: user.userImage,
-    }));
+    const usersData: UserResponse[] = await Promise.all(
+      users.map(async (user) => ({
+        user: {
+          email: user.email,
+          username: user.username,
+          receiverId: user._id as string,
+        },
+      }))
+    );
 
     // Send the response with usersData
     res.status(200).json(usersData);
