@@ -42,7 +42,7 @@ export async function login(
       .json({
         message: "User logged in successfully!",
         _id: validUser._id,
-        name: validUser.username,
+        username: validUser.username,
         email: validUser.email,
         userImage: validUser.userImage,
       });

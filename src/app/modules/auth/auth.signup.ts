@@ -71,7 +71,7 @@ export async function signup(
       .json({
         message: "User registered successfully!",
         _id: newUser._id,
-        name: newUser.username,
+        username: newUser.username,
         email: newUser.email,
         userImage: newUser.userImage,
       });
