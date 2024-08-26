@@ -1,79 +1,73 @@
 import { Request, Response } from "express";
 import Conversation from "./conversation.model";
 import Message from "./message.model";
-import UserModel from "../user/user.model";
+import { User } from "../user/user.model";
 
-// Send Message
-export const sendMessage = async (req: Request, res: Response) => {
+interface SendMessageRequest extends Request {
+  body: {
+    conversationId: string;
+    senderId: string;
+    message: string;
+    receiverId?: string;
+  };
+}
+
+interface GetMessagesRequest extends Request {
+  params: {
+    conversationId: string;
+  };
+  query: {
+    senderId?: string;
+    receiverId?: string;
+  };
+}
+
+export const sendMessage = async (
+  req: SendMessageRequest,
+  res: Response
+): Promise<Response> => {
   try {
-    const { conversationId, senderId, message, receiverId } = req.body;
+    const { conversationId, senderId, message, receiverId = "" } = req.body;
 
     if (!senderId || !message) {
-      return res.status(400).json({ error: "Please fill all required fields" });
+      return res.status(400).send("Please fill all required fields");
     }
 
-    let conversation;
     let newMessage;
 
-    // Check if the conversation ID is provided
-    if (conversationId && conversationId !== "new") {
-      // Find the conversation by its ID
-      conversation = await Conversation.findById(conversationId);
-
-      if (!conversation) {
-        return res.status(404).json({ error: "Conversation not found" });
-      }
-
-      // Create a new message for the existing conversation
-      newMessage = new Message({
-        conversationId,
-        senderId,
-        message,
-      });
-    } else if (receiverId) {
-      // Find an existing conversation between the sender and receiver
-      conversation = await Conversation.findOne({
+    if (conversationId === "new" && receiverId) {
+      let conversation = await Conversation.findOne({
         members: { $all: [senderId, receiverId] },
       });
 
       if (!conversation) {
-        // If no conversation exists, create a new one
         conversation = new Conversation({
           members: [senderId, receiverId],
         });
         await conversation.save();
       }
 
-      // Create a new message for the found or newly created conversation
       newMessage = new Message({
         conversationId: conversation._id,
         senderId,
         message,
       });
+    } else if (!conversationId && !receiverId) {
+      return res.status(400).send("Please fill all required fields");
     } else {
-      return res
-        .status(400)
-        .json({ error: "Receiver ID is required for a new conversation" });
+      newMessage = new Message({ conversationId, senderId, message });
     }
 
-    // Save the new message to the database
     await newMessage.save();
-
-    // Return the message and conversation ID
-    return res.status(200).json({
-      message: newMessage,
-      conversationId: conversation._id,
-    });
+    return res.status(200).send("Message sent successfully");
   } catch (error) {
-    console.error("Error sending message:", error);
-    return res
-      .status(500)
-      .json({ error: "An error occurred while sending the message" });
+    console.log("Error", error);
+    return res.status(500).send("An error occurred while sending the message");
   }
 };
-// Get Messages
+
 export const getMessages = async (
-  req: Request,
+  req: GetMessagesRequest,
   res: Response
 ): Promise<Response> => {
   try {
@@ -84,12 +78,12 @@ export const getMessages = async (
       const messages = await Message.find({ conversationId }).lean();
       return await Promise.all(
         messages.map(async (msg) => {
-          const user = await UserModel.findById(msg.senderId).lean();
+          const user = await User.findById(msg.senderId).lean();
           return {
             user: {
               id: user?._id,
               email: user?.email,
-              name: user?.name,
+              username: user?.username,
             },
             message: msg.message,
           };
@@ -99,9 +93,7 @@ export const getMessages = async (
 
     if (conversationId === "new") {
       if (!senderId || !receiverId) {
-        return res
-          .status(400)
-          .json({ error: "SenderId and ReceiverId are required" });
+        return res.status(400).send("SenderId and ReceiverId are required");
       }
 
       const conversation = await Conversation.findOne({
@@ -119,12 +111,11 @@ export const getMessages = async (
       return res.status(200).json(messages);
     }
   } catch (error) {
-    console.error("Error fetching messages:", error);
+    console.log("Error", error);
     return res
       .status(500)
-      .json({ error: "An error occurred while fetching the messages" });
+      .send("An error occurred while fetching the messages");
   }
 };
 
-// Export message controller
 export const messageController = { sendMessage, getMessages };

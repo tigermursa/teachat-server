@@ -11,14 +11,14 @@ import { ConversationRoute } from "./app/modules/Conversation/conversation.route
 const app = express();
 
 // Parsers
-app.use(express.json()); 
-app.use(cookieParser()); 
+app.use(express.json());
+app.use(cookieParser());
 
 // CORS setup
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace this with your frontend URL
-    credentials: true, // This allows the browser to send cookies with the requests
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 
