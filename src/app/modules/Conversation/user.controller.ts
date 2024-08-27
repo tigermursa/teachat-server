@@ -23,6 +23,7 @@ const getUsers = async (req: Request, res: Response): Promise<void> => {
           email: user.email,
           username: user.username,
           receiverId: user._id as string,
+          userImage:user.userImage,
         },
       }))
     );
