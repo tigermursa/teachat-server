@@ -59,7 +59,17 @@ export const sendMessage = async (
     }
 
     await newMessage.save();
-    return res.status(200).send("Message sent successfully");
+
+    // Return the new message with the createdAt timestamp
+    return res.status(200).json({
+      message: "Message sent successfully",
+      data: {
+        conversationId: newMessage.conversationId,
+        senderId: newMessage.senderId,
+        message: newMessage.message,
+        createdAt: newMessage.createdAt, // Return createdAt field
+      },
+    });
   } catch (error) {
     console.log("Error", error);
     return res.status(500).send("An error occurred while sending the message");
@@ -86,6 +96,7 @@ export const getMessages = async (
               username: user?.username,
             },
             message: msg.message,
+            createdAt: msg.createdAt, // Include the createdAt timestamp
           };
         })
       );
