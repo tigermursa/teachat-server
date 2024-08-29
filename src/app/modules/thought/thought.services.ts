@@ -2,9 +2,17 @@ import mongoose, { ObjectId } from "mongoose";
 import { Thought } from "./thought.model";
 import { IThought } from "./thought.interface";
 import { DeleteResult } from "mongodb";
+
 //create
-//1.create
-const createThought = async (data: IThought) => {
+const createThoughtInDB = async (data: IThought) => {
+  // Check if a thought from the same user already exists
+  const existingThought = await Thought.findOne({ userId: data.userId }).exec();
+
+  if (existingThought) {
+    throw new Error("You already shared your thought today");
+  }
+
+  // Create a new thought if none exists
   const result = await Thought.create(data);
   return result;
 };
@@ -78,7 +86,7 @@ const updateThoughtFromDB = async (
 };
 //exports:
 export const ThoughtServices = {
-  createThought,
+  createThoughtInDB,
   getAllThoughtFromDB,
   getSingleThoughtFromDB,
   deleteThoughtFromDB,

@@ -12,6 +12,10 @@ const thoughtSchema: Schema = new Schema<IThought, ThoughtModel>({
     type: String,
     required: true,
   },
+  userId: {
+    type: String,
+    required: true,
+  },
 });
 
 export const Thought: ThoughtModel = model<IThought, ThoughtModel>(

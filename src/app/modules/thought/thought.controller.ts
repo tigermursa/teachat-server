@@ -1,24 +1,33 @@
 import { Request, Response } from "express";
 import { ThoughtServices } from "./thought.services";
+import { IThought } from "./thought.interface";
 
 // Create Appointment
 const createThought = async (req: Request, res: Response) => {
   try {
-    const appointmentData = req.body;
-    // Populate the mentor and student details
-    const populatedResult = await ThoughtServices.createThought(
-      appointmentData
-    );
+    const thoughtData: IThought = req.body;
+
+    // Call the service function to create the thought
+    const result = await ThoughtServices.createThoughtInDB(thoughtData);
 
     res.status(200).json({
       success: true,
       message: "Thought created successfully!",
-      data: populatedResult,
+      data: result,
     });
   } catch (err: any) {
+    // Check if the error message is the custom one thrown above
+    if (err.message === "You already shared your thought today") {
+      return res.status(400).json({
+        success: false,
+        message: err.message,
+      });
+    }
+
+    // Handle other errors
     res.status(500).json({
       success: false,
-      message: "Error creating appointment!",
+      message: "Error creating thought!",
       error: err.message,
     });
   }
