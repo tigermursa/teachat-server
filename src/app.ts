@@ -7,6 +7,7 @@ import { errorHandler } from "./app/middlewares/ErrorHandler";
 import { UserExcRoute } from "./app/modules/Conversation/users.routes";
 import { MassageRoute } from "./app/modules/Conversation/messages.routes";
 import { ConversationRoute } from "./app/modules/Conversation/conversation.routes";
+import { ThoughtRoutes } from "./app/modules/thought/thought.routes";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/auth", AuthRoutes);
 app.use("/api", UserExcRoute);
 app.use("/api", MassageRoute);
 app.use("/api", ConversationRoute);
+app.use("/api/thought", ThoughtRoutes);
 
 app.use(errorHandler);
 

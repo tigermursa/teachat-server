@@ -1,6 +1,6 @@
 import mongoose, { ObjectId } from "mongoose";
-import { IUser, User } from "./user.model";
-
+import { User } from "./user.model";
+import { IUser } from "./user.interface";
 
 // getAll data
 const getAllUsersFromDB = async () => {
@@ -59,10 +59,7 @@ const updateUserFromDB = async (
     }
 
     // Perform the update
-    const result = await User.updateOne(
-      { _id },
-      { $set: updatedData }
-    ).exec();
+    const result = await User.updateOne({ _id }, { $set: updatedData }).exec();
     return result;
   } catch (error: any) {
     console.error("Error updating user:", error.message);

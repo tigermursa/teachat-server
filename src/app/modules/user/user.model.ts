@@ -1,16 +1,5 @@
-import { Schema, model, Model, Document } from "mongoose";
-
-export interface IUser extends Document {
-  receiverId: string;
-  username: string;
-  email: string;
-  location: string;
-  password: string;
-  gender: string;
-  age: string;
-  work: string;
-  userImage: string;
-}
+import { Schema, model, Model } from "mongoose";
+import { IUser } from "./user.interface";
 
 export type UserModel = Model<IUser>;
 

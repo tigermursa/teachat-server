@@ -4,7 +4,7 @@ import { CustomError } from "../../errors/CustomError";
 
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
-import { IUser } from "../user/user.model";
+import { IUser } from "../user/user.interface";
 
 export async function signup(
   req: Request,

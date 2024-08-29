@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { IUser, User } from "../user/user.model";
+import { User } from "../user/user.model";
+import { IUser } from "../user/user.interface";
 
 interface UserResponse {
   user: {
@@ -23,7 +24,7 @@ const getUsers = async (req: Request, res: Response): Promise<void> => {
           email: user.email,
           username: user.username,
           receiverId: user._id as string,
-          userImage:user.userImage,
+          userImage: user.userImage,
         },
       }))
     );

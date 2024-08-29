@@ -1,5 +1,6 @@
 import { Model } from "mongoose";
-import { IUser, User } from "../user/user.model";
+import { User } from "../user/user.model";
+import { IUser } from "../user/user.interface";
 
 export interface UserWithStatic extends Model<IUser> {
   isUserExists(id: string): Promise<IUser | null>;
