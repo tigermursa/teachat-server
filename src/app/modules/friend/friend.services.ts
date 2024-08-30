@@ -96,9 +96,32 @@ const getFriendsList = async (userId: string) => {
   return user.friends;
 };
 
+//get users thats not my friends
+const getNonFriends = async (userId: string) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new Error("Invalid user ID.");
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error("User not found.");
+  }
+
+  // Get the list of friends
+  const friendsIds = user.friends;
+
+  // Get all users excluding the current user
+  const nonFriends = await User.find({
+    _id: { $ne: userId, $nin: friendsIds },
+  }).select("username email");
+
+  return nonFriends;
+};
+
 export const FriendServices = {
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
   getFriendsList,
+  getNonFriends,
 };

@@ -69,9 +69,28 @@ const getFriendsList = async (req: Request, res: Response) => {
   }
 };
 
+//not my friends
+const getNonFriends = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    const result = await FriendServices.getNonFriends(userId);
+    res.status(200).json({
+      success: true,
+      message: "Non-friends list retrieved successfully ✔",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export const FriendController = {
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
   getFriendsList,
+  getNonFriends,
 };
