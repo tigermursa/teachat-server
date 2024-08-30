@@ -10,5 +10,5 @@ router.get("/get", ThoughtController.getAllThought);
 router.get("/:id", ThoughtController.getSingleThought);
 router.delete("/:id", ThoughtController.deleteThought);
 router.patch("/:id", ThoughtController.updateThought);
-
+router.get("/info/:userId", ThoughtController.getThoughtByUser);
 export const ThoughtRoutes = router;

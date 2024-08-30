@@ -149,10 +149,38 @@ const updateThought = async (req: Request, res: Response) => {
   }
 };
 
+// Get thoughts by userId
+const getThoughtByUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const result = await ThoughtServices.getThoughtByUserId(userId);
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "No thought found for this user",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Thought retrieved successfully",
+      data: result, // Directly return the thought object
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Error retrieving thought",
+      error: error.message,
+    });
+  }
+};
+
 export const ThoughtController = {
   createThought,
   getAllThought,
   getSingleThought,
   updateThought,
   deleteThought,
+  getThoughtByUser,
 };

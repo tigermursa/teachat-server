@@ -84,6 +84,24 @@ const updateThoughtFromDB = async (
     throw new Error("Error updating Thought: " + error.message);
   }
 };
+
+// Fetch thoughts by userId
+const getThoughtByUserId = async (userId: string) => {
+  try {
+    // Validate if the userId is a non-empty string
+    if (!userId || typeof userId !== "string") {
+      throw new Error("Invalid user ID");
+    }
+
+    // Find a single thought by userId
+    const thought = await Thought.findOne({ userId }).exec();
+
+    // Return the thought if it exists, otherwise return null
+    return thought || null;
+  } catch (error) {
+    throw new Error("Error retrieving thought by userId: ");
+  }
+};
 //exports:
 export const ThoughtServices = {
   createThoughtInDB,
@@ -91,4 +109,5 @@ export const ThoughtServices = {
   getSingleThoughtFromDB,
   deleteThoughtFromDB,
   updateThoughtFromDB,
+  getThoughtByUserId,
 };
