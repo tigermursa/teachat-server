@@ -113,7 +113,7 @@ const getNonFriends = async (userId: string) => {
   // Get all users excluding the current user
   const nonFriends = await User.find({
     _id: { $ne: userId, $nin: friendsIds },
-  }).select("username email");
+  }).select("username email userImage");
 
   return nonFriends;
 };
