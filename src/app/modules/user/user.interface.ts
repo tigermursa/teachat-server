@@ -8,4 +8,6 @@ export interface IUser extends Document {
   age: string;
   work: string;
   userImage: string;
+  friendRequests: string[];
+  friends: string[];
 }

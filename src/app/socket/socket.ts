@@ -1,12 +1,6 @@
 import { Server, Socket } from "socket.io";
-import { Document } from "mongoose";
 import { User } from "../modules/user/user.model";
-
-// Define the shape of a User document from Mongoose
-interface IUser extends Document {
-  username: string;
-  email: string;
-}
+import { FriendServices } from "../modules/friend/friend.services";
 
 // Define the shape of the User object in the users array
 interface SocketUser {
@@ -62,9 +56,7 @@ const initializeSocket = (io: Server): void => {
             return;
           }
 
-          const user: IUser | null = await User.findById(senderId).select(
-            "username email"
-          );
+          const user = await User.findById(senderId).select("username email");
 
           if (!user) {
             console.error(`User with ID ${senderId} not found in database.`);
@@ -83,7 +75,6 @@ const initializeSocket = (io: Server): void => {
             },
           };
 
-          // Send message to both sender and receiver if they are online
           if (receiver) {
             io.to(receiver.socketId).emit("getMessage", messageData);
           }
@@ -94,6 +85,35 @@ const initializeSocket = (io: Server): void => {
         }
       }
     );
+
+    // Handle friend requests
+    socket.on("sendFriendRequest", async ({ senderId, receiverId }) => {
+      try {
+        const receiver = findUserById(receiverId);
+        const sender = findUserById(senderId);
+
+        const friendRequest = await FriendServices.sendFriendRequest(
+          senderId,
+          receiverId
+        );
+
+        if (receiver) {
+          io.to(receiver.socketId).emit("receiveFriendRequest", {
+            senderId,
+            username: friendRequest.username,
+          });
+        }
+
+        if (sender) {
+          io.to(sender.socketId).emit("friendRequestSent", {
+            receiverId,
+            status: "Request sent successfully!",
+          });
+        }
+      } catch (error) {
+        console.error("Error sending friend request:", error);
+      }
+    });
 
     // Handle user disconnection
     socket.on("disconnect", () => {

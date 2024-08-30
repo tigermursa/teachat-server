@@ -8,6 +8,7 @@ import { UserExcRoute } from "./app/modules/Conversation/users.routes";
 import { MassageRoute } from "./app/modules/Conversation/messages.routes";
 import { ConversationRoute } from "./app/modules/Conversation/conversation.routes";
 import { ThoughtRoutes } from "./app/modules/thought/thought.routes";
+import { FriendRoutes } from "./app/modules/friend/friend.routes";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api", UserExcRoute);
 app.use("/api", MassageRoute);
 app.use("/api", ConversationRoute);
 app.use("/api/thought", ThoughtRoutes);
+app.use("/api", FriendRoutes);
 
 app.use(errorHandler);
 

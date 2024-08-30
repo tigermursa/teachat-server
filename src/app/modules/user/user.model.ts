@@ -36,6 +36,18 @@ const userSchema: Schema = new Schema<IUser, UserModel>({
     type: String,
     default: null,
   },
+  friendRequests: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 export const User: UserModel = model<IUser, UserModel>("User", userSchema);
