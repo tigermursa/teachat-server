@@ -51,7 +51,7 @@ const rejectFriendRequest = async (req: Request, res: Response) => {
     });
   }
 };
-
+//accept request
 const getFriendsList = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;

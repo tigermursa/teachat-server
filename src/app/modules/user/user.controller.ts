@@ -2,9 +2,6 @@ import { Request, Response } from "express";
 
 import { UserServices } from "./user.services";
 
-
-
-
 // Get-All
 const getAllUsers = async (req: Request, res: Response) => {
   try {
@@ -107,9 +104,44 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+const getUserByIDArray = async (req: Request, res: Response) => {
+  try {
+    const { userIds } = req.body;
+
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or empty array of user IDs",
+      });
+    }
+
+    const users = await UserServices.getUsersDetailByIDArray(userIds);
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No users found for the provided IDs",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Users retrieved successfully ✔",
+      data: users,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong !!!",
+      error: error.message,
+    });
+  }
+};
+
 export const UsersController = {
   getAllUsers,
   getSingleUser,
   deleteUser,
   updateUser,
+  getUserByIDArray,
 };

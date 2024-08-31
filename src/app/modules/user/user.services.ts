@@ -66,10 +66,34 @@ const updateUserFromDB = async (
     throw new Error("Error updating user: " + error.message);
   }
 };
+
+const getUsersDetailByIDArray = async (userIds: string[]) => {
+  try {
+    // Validate if all IDs are valid MongoDB ObjectId formats
+    const validIds = userIds.filter((id) =>
+      mongoose.Types.ObjectId.isValid(id)
+    );
+
+    if (validIds.length === 0) {
+      return null;
+    }
+
+    // Find users whose IDs match the valid ones in the array and project specific fields
+    const users = await User.find({ _id: { $in: validIds } })
+      .select("_id username userImage") // Only include the fields you need
+      .exec();
+
+    return users;
+  } catch (error) {
+    throw new Error("Error retrieving users from database");
+  }
+};
+
 //exports:
 export const UserServices = {
   getAllUsersFromDB,
   getSingleUserFromDB,
   deleteUserFromDB,
   updateUserFromDB,
+  getUsersDetailByIDArray,
 };
