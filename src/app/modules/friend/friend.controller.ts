@@ -3,17 +3,20 @@ import { FriendServices } from "./friend.services";
 
 const sendFriendRequest = async (req: Request, res: Response) => {
   try {
-    const { senderId, receiverId } = req.body;
+    const senderId = req.body.senderId;
+    const receiverId = req.body.receiverId;
+
     const result = await FriendServices.sendFriendRequest(senderId, receiverId);
     res.status(200).json({
       success: true,
-      message: "Friend request sent successfully ✔",
+      message: "Friend request sent successfully!",
       data: result,
     });
   } catch (error: any) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong !!!",
+      error: error.message,
     });
   }
 };

@@ -48,6 +48,12 @@ const userSchema: Schema = new Schema<IUser, UserModel>({
       ref: "User",
     },
   ],
+  sentFriendRequests: [ 
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 export const User: UserModel = model<IUser, UserModel>("User", userSchema);

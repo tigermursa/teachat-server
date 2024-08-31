@@ -9,9 +9,11 @@ const sendFriendRequest = async (senderId: string, receiverId: string) => {
     throw new Error("Invalid user IDs.");
   }
 
+  const sender = await User.findById(senderId);
   const receiver = await User.findById(receiverId);
-  if (!receiver) {
-    throw new Error("Receiver does not exist.");
+
+  if (!receiver || !sender) {
+    throw new Error("Sender or receiver does not exist.");
   }
 
   if (
@@ -21,8 +23,13 @@ const sendFriendRequest = async (senderId: string, receiverId: string) => {
     throw new Error("Friend request already sent or you are already friends.");
   }
 
+  // Add sender's ID to receiver's friendRequests
   receiver.friendRequests.push(senderId);
+  // Add receiver's ID to sender's sentFriendRequests
+  sender.sentFriendRequests.push(receiverId);
+
   await receiver.save();
+  await sender.save();
 
   return receiver;
 };

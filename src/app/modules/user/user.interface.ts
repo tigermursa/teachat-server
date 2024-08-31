@@ -10,4 +10,5 @@ export interface IUser extends Document {
   userImage: string;
   friendRequests: string[];
   friends: string[];
+  sentFriendRequests: string[];
 }
