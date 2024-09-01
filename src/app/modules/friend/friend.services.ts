@@ -53,11 +53,21 @@ const acceptFriendRequest = async (userId: string, senderId: string) => {
     throw new Error("No friend request found from this user.");
   }
 
+  // Remove the sender's ID from the user's friendRequests array
   user.friendRequests = user.friendRequests.filter(
     (id) => id.toString() !== senderId.toString()
   );
+
+  // Add the sender's ID to the user's friends array
   user.friends.push(senderId);
+
+  // Add the user's ID to the sender's friends array
   sender.friends.push(userId);
+
+  // Remove the user's ID from the sender's sentFriendRequests array
+  sender.sentFriendRequests = sender.sentFriendRequests.filter(
+    (id) => id.toString() !== userId.toString()
+  );
 
   await user.save();
   await sender.save();
@@ -74,15 +84,24 @@ const rejectFriendRequest = async (userId: string, senderId: string) => {
   }
 
   const user = await User.findById(userId);
+  const sender = await User.findById(senderId);
 
-  if (!user) {
-    throw new Error("User not found.");
+  if (!user || !sender) {
+    throw new Error("User or sender not found.");
   }
 
+  // Remove the sender's ID from the user's friendRequests array
   user.friendRequests = user.friendRequests.filter(
     (id) => id.toString() !== senderId.toString()
   );
+
+  // Remove the user's ID from the sender's sentFriendRequests array
+  sender.sentFriendRequests = sender.sentFriendRequests.filter(
+    (id) => id.toString() !== userId.toString()
+  );
+
   await user.save();
+  await sender.save();
 
   return user;
 };
