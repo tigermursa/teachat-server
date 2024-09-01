@@ -80,7 +80,7 @@ const getUsersDetailByIDArray = async (userIds: string[]) => {
 
     // Find users whose IDs match the valid ones in the array and project specific fields
     const users = await User.find({ _id: { $in: validIds } })
-      .select("_id username userImage") // Only include the fields you need
+      .select("_id username userImage work age") // Only include the fields you need
       .exec();
 
     return users;
