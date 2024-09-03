@@ -3,7 +3,7 @@ import { IThought } from "./thought.interface";
 
 export type ThoughtModel = Model<IThought>;
 
-const thoughtSchema: Schema = new Schema<IThought, ThoughtModel>(
+const thoughtSchema: Schema<IThought, ThoughtModel> = new Schema<IThought, ThoughtModel>(
   {
     text: {
       type: String,
@@ -17,11 +17,13 @@ const thoughtSchema: Schema = new Schema<IThought, ThoughtModel>(
       type: String,
       required: true,
     },
+    createdAt: {
+      type: Date,
+      default: Date.now, //  setting the current date when creating 
+      index: { expires: '24h' }, // 24 hours
+    },
   },
   { timestamps: true }
 );
 
-export const Thought: ThoughtModel = model<IThought, ThoughtModel>(
-  "thought",
-  thoughtSchema
-);
+export const Thought: ThoughtModel = model<IThought, ThoughtModel>("thought", thoughtSchema);
