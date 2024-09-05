@@ -173,7 +173,10 @@ const unfriendUser = async (userId: string, friendId: string) => {
   await user.save();
   await friend.save();
 
-  return user;
+  return {
+    user,
+    friend,
+  };
 };
 
 export const FriendServices = {

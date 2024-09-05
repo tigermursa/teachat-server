@@ -8,5 +8,5 @@ router.post("/friend-request/accept", FriendController.acceptFriendRequest); // 
 router.post("/friend-request/decline", FriendController.rejectFriendRequest); // Decline friend request
 router.get("/friends/:id", FriendController.getFriendsList); // Get all friends
 router.get("/non-friends/:id", FriendController.getNonFriends); // Get non-friends list
-
+router.post("/friend/unfriend", FriendController.unfriendUser); // Unfriend a user
 export const FriendRoutes = router;

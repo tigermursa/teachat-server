@@ -90,10 +90,27 @@ const getNonFriends = async (req: Request, res: Response) => {
   }
 };
 
+const unfriendUser = async (req: Request, res: Response) => {
+  try {
+    const { userId, friendId } = req.body;
+    const result = await FriendServices.unfriendUser(userId, friendId);
+    res.status(200).json({
+      success: true,
+      message: "User unfriended successfully ✔",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 export const FriendController = {
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
   getFriendsList,
   getNonFriends,
+  unfriendUser,
 };
