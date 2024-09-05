@@ -1,6 +1,5 @@
 import { Server, Socket } from "socket.io";
 import { User } from "../modules/user/user.model";
-import { FriendServices } from "../modules/friend/friend.services";
 
 // Define the shape of the User object in the users array
 interface SocketUser {
@@ -85,30 +84,28 @@ const initializeSocket = (io: Server): void => {
         }
       }
     );
-
-    // Handle friend requests
+    //res
     socket.on("sendFriendRequest", async ({ senderId, receiverId }) => {
       try {
         const receiver = findUserById(receiverId);
-        const sender = findUserById(senderId);
+        const sender = await User.findById(senderId).select("username");
 
-        const friendRequest = await FriendServices.sendFriendRequest(
-          senderId,
-          receiverId
-        );
-
-        if (receiver) {
-          io.to(receiver.socketId).emit("receiveFriendRequest", {
-            senderId,
-            username: friendRequest.username,
-          });
+        if (!sender) {
+          console.error(`Sender with ID ${senderId} not found in database.`);
+          return;
         }
 
-        if (sender) {
-          io.to(sender.socketId).emit("friendRequestSent", {
-            receiverId,
-            status: "Request sent successfully!",
+        if (receiver) {
+          // Emit the friend request event to the receiver
+          io.to(receiver.socketId).emit("friendRequest", {
+            senderId,
+            senderUsername: sender.username,
           });
+          console.log(
+            `😇 Friend request sent from ${sender.username} to user ${receiverId}`
+          );
+        } else {
+          console.error(`Receiver with ID ${receiverId} not found.`, users); // Log the active users list
         }
       } catch (error) {
         console.error("Error sending friend request:", error);
