@@ -144,10 +144,43 @@ const getNonFriends = async (userId: string) => {
   return nonFriends;
 };
 
+//unfriend user
+const unfriendUser = async (userId: string, friendId: string) => {
+  if (
+    !mongoose.Types.ObjectId.isValid(userId) ||
+    !mongoose.Types.ObjectId.isValid(friendId)
+  ) {
+    throw new Error("Invalid user IDs.");
+  }
+
+  const user = await User.findById(userId);
+  const friend = await User.findById(friendId);
+
+  if (!user || !friend) {
+    throw new Error("User or friend not found.");
+  }
+
+  // Remove friendId from user's friends list
+  user.friends = user.friends.filter(
+    (id) => id.toString() !== friendId.toString()
+  );
+
+  // Remove userId from friend's friends list
+  friend.friends = friend.friends.filter(
+    (id) => id.toString() !== userId.toString()
+  );
+
+  await user.save();
+  await friend.save();
+
+  return user;
+};
+
 export const FriendServices = {
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
   getFriendsList,
   getNonFriends,
+  unfriendUser,
 };
