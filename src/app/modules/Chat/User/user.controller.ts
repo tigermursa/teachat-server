@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { User } from "./user.model";
-import { IUser } from "./user.interface";
+import { IUser } from "../../user/user.interface";
+import { User } from "../../user/user.model";
 
 interface UserResponse {
   user: {
