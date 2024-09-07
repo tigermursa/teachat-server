@@ -11,7 +11,7 @@ export const userValidationSchema = z.object({
       message: "Gender must be 'Male', 'Female', or 'Other'",
     }),
   }),
-  age: z.string().regex(/^\d+$/, "Age must be a valid number"),
+  age: z.number().int().positive("Age must be a positive number"),
   work: z.string().min(1, "Work field is required"),
   password: z
     .string()

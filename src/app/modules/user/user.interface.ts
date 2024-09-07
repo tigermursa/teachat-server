@@ -5,7 +5,7 @@ export interface IUser extends Document {
   location: string;
   password: string;
   gender: string;
-  age: string;
+  age: number;
   work: string;
   userImage: string;
   friendRequests: string[];
