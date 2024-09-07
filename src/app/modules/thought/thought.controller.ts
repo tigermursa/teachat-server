@@ -1,13 +1,23 @@
 import { Request, Response } from "express";
 import { ThoughtServices } from "./thought.services";
 import { IThought } from "./thought.interface";
+import { validateThought } from "./thought.zodValidation";
 
-// Create Appointment
+// Create Thought
 const createThought = async (req: Request, res: Response) => {
   try {
+    const validationResult = validateThought(req.body);
+    if (!validationResult.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error!",
+        errors: validationResult.error.errors,
+      });
+    }
+
     const thoughtData: IThought = req.body;
 
-    // Call the service function to create the thought
+    //the service function
     const result = await ThoughtServices.createThoughtInDB(thoughtData);
 
     res.status(200).json({
@@ -16,7 +26,7 @@ const createThought = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err: any) {
-    // Check if the error message is the custom one thrown above
+    //error message
     if (err.message === "You already shared your thought today") {
       return res.status(400).json({
         success: false,
@@ -32,6 +42,7 @@ const createThought = async (req: Request, res: Response) => {
     });
   }
 };
+
 
 // Get-All
 const getAllThought = async (req: Request, res: Response) => {
