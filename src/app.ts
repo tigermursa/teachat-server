@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { UserRoutes } from "./app/modules/user/user.routes";
 import { AuthRoutes } from "./app/modules/auth/auth.routes";
-import { errorHandler } from "./app/middlewares/ErrorHandler";
+import { errorHandler } from "./app/errors/ErrorHandler";
 import { UserExcRoute } from "./app/modules/Chat/User/users.routes";
 import { MassageRoute } from "./app/modules/Chat/Messages/messages.routes";
 import { ConversationRoute } from "./app/modules/Chat/Conversation/conversation.routes";

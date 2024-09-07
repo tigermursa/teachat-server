@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "./auth.services";
 import { CustomError } from "../../errors/CustomError";
-
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import { IUser } from "../user/user.interface";

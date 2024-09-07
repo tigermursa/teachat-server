@@ -9,7 +9,7 @@ export async function logout(
     res.clearCookie("access_token", {
       httpOnly: true,
       secure: true,
-      sameSite: "none", 
+      sameSite: "none",
     });
     res.status(200).json({
       message: "User has been logged out successfully!",

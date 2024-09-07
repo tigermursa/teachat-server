@@ -1,4 +1,3 @@
-
 export class CustomError extends Error {
   statusCode: number;
 
@@ -15,3 +14,6 @@ export class CustomError extends Error {
     }
   }
 }
+
+//this is using in auth.login
+//this is using in auth.signup
