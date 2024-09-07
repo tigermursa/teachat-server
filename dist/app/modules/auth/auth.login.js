@@ -40,6 +40,7 @@ function login(req, res, next) {
                 httpOnly: true,
                 secure: true, // Set 'secure' to true in production
                 sameSite: "none",
+                maxAge: 1000 * 60 * 60 * 24,
             })
                 .status(200)
                 .json({

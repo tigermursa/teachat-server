@@ -15,12 +15,12 @@ const conversation_routes_1 = require("./app/modules/Chat/Conversation/conversat
 const thought_routes_1 = require("./app/modules/thought/thought.routes");
 const friend_routes_1 = require("./app/modules/friend/friend.routes");
 const app = (0, express_1.default)();
-// Parsers
+// Parserss
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // CORS setup
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173",
+    origin: "*",
     credentials: true,
 }));
 // Application routes:
