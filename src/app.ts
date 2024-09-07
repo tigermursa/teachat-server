@@ -4,9 +4,9 @@ import cookieParser from "cookie-parser";
 import { UserRoutes } from "./app/modules/user/user.routes";
 import { AuthRoutes } from "./app/modules/auth/auth.routes";
 import { errorHandler } from "./app/middlewares/ErrorHandler";
-import { UserExcRoute } from "./app/modules/Conversation/User/users.routes";
-import { MassageRoute } from "./app/modules/Conversation/Messages/messages.routes";
-import { ConversationRoute } from "./app/modules/Conversation/Conversation/conversation.routes";
+import { UserExcRoute } from "./app/modules/Chat/User/users.routes";
+import { MassageRoute } from "./app/modules/Chat/Messages/messages.routes";
+import { ConversationRoute } from "./app/modules/Chat/Conversation/conversation.routes";
 import { ThoughtRoutes } from "./app/modules/thought/thought.routes";
 import { FriendRoutes } from "./app/modules/friend/friend.routes";
 
