@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import Conversation from "./conversation.model";
+import Conversation from "../Conversation/conversation.model";
 import Message from "./message.model";
-import { User } from "../user/user.model";
+import { User } from "../../user/user.model";
 
 interface SendMessageRequest extends Request {
   body: {

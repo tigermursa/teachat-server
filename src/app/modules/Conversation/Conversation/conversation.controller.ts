@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Conversation from "./conversation.model";
-import { User } from "../user/user.model";
+import { User } from "../../user/user.model";
 
 interface IUser {
   _id: string;
