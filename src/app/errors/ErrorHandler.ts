@@ -7,7 +7,7 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ): Response | void {
-  // Set default status code and message
+  // default status code and message
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
 
@@ -16,7 +16,7 @@ export function errorHandler(
     console.error(`[${new Date().toISOString()}] ${err.name}: ${message}`);
   }
 
-  // Respond with the error
+  // Respond  the error
   return res.status(statusCode).json({
     success: false,
     error: {

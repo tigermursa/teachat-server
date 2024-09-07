@@ -5,10 +5,10 @@ export class CustomError extends Error {
     super(message);
     this.statusCode = statusCode;
 
-    // Ensure the name of this error is the same as the class name
+    // name of this error is the same as the class name
     this.name = this.constructor.name;
 
-    // Capture the stack trace if not in production
+    //  the stack trace if not in production
     if (process.env.NODE_ENV !== "production") {
       Error.captureStackTrace(this, this.constructor);
     }

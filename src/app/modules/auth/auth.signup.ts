@@ -4,6 +4,7 @@ import { CustomError } from "../../errors/CustomError";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import { IUser } from "../user/user.interface";
+import { validateUser } from "../user/user.zodValidation";
 
 export async function signup(
   req: Request,
@@ -23,6 +24,13 @@ export async function signup(
   } = req.body;
 
   try {
+    // Validate input using Zod
+    const validationResult = validateUser(req.body);
+    if (!validationResult.success) {
+      // Return validation errors if input is invalid
+      return res.status(400).json({ errors: validationResult.error.errors });
+    }
+
     // Check if user already exists
     const validUser = await AuthService.findUserByEmail(email);
     if (validUser) {
