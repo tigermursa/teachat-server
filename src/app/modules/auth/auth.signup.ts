@@ -73,6 +73,7 @@ export async function signup(
         httpOnly: true,
         secure: true, // Set 'secure' to true in production
         sameSite: "none", // Adjust sameSite for production
+        maxAge: 1000 * 60 * 60 * 24,
       })
       .status(201)
       .json({
