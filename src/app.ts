@@ -12,7 +12,7 @@ import { FriendRoutes } from "./app/modules/friend/friend.routes";
 
 const app = express();
 
-// Parsers
+// Parserss
 app.use(express.json());
 app.use(cookieParser());
 
