@@ -9,6 +9,7 @@ import { MassageRoute } from "./app/modules/Chat/Messages/messages.routes";
 import { ConversationRoute } from "./app/modules/Chat/Conversation/conversation.routes";
 import { ThoughtRoutes } from "./app/modules/thought/thought.routes";
 import { FriendRoutes } from "./app/modules/friend/friend.routes";
+import config from "./app/config";
 
 const app = express();
 
@@ -19,7 +20,7 @@ app.use(cookieParser());
 // CORS setup
 app.use(
   cors({
-    origin: "https://teachatproclient.onrender.com",
+    origin: config.dev_client_url,
     credentials: true,
   })
 );
@@ -35,6 +36,7 @@ app.use("/api", FriendRoutes);
 
 app.use(errorHandler);
 
+console.log(`Clint site url :${config.dev_client_url} `);
 app.get("/", (req, res) => {
   res.send("SERVER WORKING");
 });
