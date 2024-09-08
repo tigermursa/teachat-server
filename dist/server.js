@@ -18,6 +18,8 @@ const config_1 = __importDefault(require("./app/config"));
 const http_1 = __importDefault(require("http"));
 const socket_io_1 = require("socket.io");
 const socket_1 = __importDefault(require("./app/socket/socket"));
+// Ensure the port is a number
+const port = parseInt(config_1.default.port, 10) || 5000;
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -35,9 +37,9 @@ function startServer() {
             });
             // Initialize socket connections
             (0, socket_1.default)(io);
-            // Start the server
-            server.listen(config_1.default.port, () => {
-                console.log(`Server running at port ${config_1.default.port} ✨`);
+            // Start the server with the correct port type
+            server.listen(port, '0.0.0.0', () => {
+                console.log(`Server running at port ${port} ✨`);
             });
         }
         catch (error) {
