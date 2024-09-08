@@ -5,6 +5,9 @@ import http from "http";
 import { Server } from "socket.io";
 import initializeSocket from "./app/socket/socket";
 
+// Ensure the port is a number
+const port = parseInt(config.port as string, 10) || 5000;
+
 async function startServer() {
   try {
     // Connect to MongoDB
@@ -17,7 +20,7 @@ async function startServer() {
     // Initialize Socket.io
     const io = new Server(server, {
       cors: {
-        origin: "*",
+        origin: "*", 
         methods: ["GET", "POST"],
       },
     });
@@ -25,9 +28,9 @@ async function startServer() {
     // Initialize socket connections
     initializeSocket(io);
 
-    // Start the server
-    server.listen(config.port, () => {
-      console.log(`Server running at port ${config.port} ✨`);
+    // Start the server with the correct port type
+    server.listen(port, '0.0.0.0', () => {
+      console.log(`Server running at port ${port} ✨`);
     });
   } catch (error) {
     console.error("Error starting the server:", error);
