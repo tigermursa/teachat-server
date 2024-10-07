@@ -14,13 +14,14 @@ const messages_routes_1 = require("./app/modules/Chat/Messages/messages.routes")
 const conversation_routes_1 = require("./app/modules/Chat/Conversation/conversation.routes");
 const thought_routes_1 = require("./app/modules/thought/thought.routes");
 const friend_routes_1 = require("./app/modules/friend/friend.routes");
+const config_1 = __importDefault(require("./app/config"));
 const app = (0, express_1.default)();
 // Parserss
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // CORS setup
 app.use((0, cors_1.default)({
-    origin: "https://teachatproclient.onrender.com",
+    origin: config_1.default.dev_client_url,
     credentials: true,
 }));
 // Application routes:
@@ -32,6 +33,7 @@ app.use("/api", conversation_routes_1.ConversationRoute);
 app.use("/api/thought", thought_routes_1.ThoughtRoutes);
 app.use("/api", friend_routes_1.FriendRoutes);
 app.use(ErrorHandler_1.errorHandler);
+console.log(`Clint site url :${config_1.default.dev_client_url} `);
 app.get("/", (req, res) => {
     res.send("SERVER WORKING");
 });

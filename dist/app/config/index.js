@@ -10,4 +10,6 @@ exports.default = {
     port: process.env.PORT,
     data_base_url: process.env.DATABASE_URL,
     bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS || 10,
+    dev_client_url: process.env.DEV_CLIENT_URL,
+    prod_client_url: process.env.PROD_CLIENT_URL,
 };
