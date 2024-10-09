@@ -20,7 +20,7 @@ app.use(cookieParser());
 // CORS setup
 app.use(
   cors({
-    origin: config.prod_client_url,
+    origin: config.dev_client_url,
     credentials: true,
   })
 );
@@ -36,7 +36,7 @@ app.use("/api", FriendRoutes);
 
 app.use(errorHandler);
 
-console.log(`Clint site url :${config.prod_client_url} `);
+console.log(`Clint site url :${config.dev_client_url} `);
 app.get("/", (req, res) => {
   res.send("SERVER WORKING");
 });
