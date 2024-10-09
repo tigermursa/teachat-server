@@ -21,7 +21,7 @@ app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // CORS setup
 app.use((0, cors_1.default)({
-    origin: config_1.default.prod_client_url,
+    origin: config_1.default.dev_client_url,
     credentials: true,
 }));
 // Application routes:
@@ -33,7 +33,7 @@ app.use("/api", conversation_routes_1.ConversationRoute);
 app.use("/api/thought", thought_routes_1.ThoughtRoutes);
 app.use("/api", friend_routes_1.FriendRoutes);
 app.use(ErrorHandler_1.errorHandler);
-console.log(`Clint site url :${config_1.default.prod_client_url} `);
+console.log(`Clint site url :${config_1.default.dev_client_url} `);
 app.get("/", (req, res) => {
     res.send("SERVER WORKING");
 });
