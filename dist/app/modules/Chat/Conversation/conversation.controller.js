@@ -15,12 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConversationController = void 0;
 const conversation_model_1 = __importDefault(require("./conversation.model"));
 const user_model_1 = require("../../user/user.model");
+// Create conversation controller
 const createConversation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { senderId, receiverId } = req.body;
         if (!senderId || !receiverId) {
             return res.status(400).send("Sender and receiver IDs are required");
         }
+        // Use lean() with IConversation type
         const existingConversation = yield conversation_model_1.default.findOne({
             members: { $all: [senderId, receiverId] },
         }).lean();
@@ -40,22 +42,25 @@ const createConversation = (req, res) => __awaiter(void 0, void 0, void 0, funct
             .send("An error occurred while creating the conversation");
     }
 });
+// Get user conversations controller
 const getUserConversations = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
         if (!userId) {
             return res.status(400).send("User ID is required");
         }
+        // Use lean() with IConversation type
         const conversations = yield conversation_model_1.default.find({
             members: { $in: [userId] },
         }).lean();
         const conversationUserData = yield Promise.all(conversations.map((conversation) => __awaiter(void 0, void 0, void 0, function* () {
             const receiverId = conversation.members.find((member) => member !== userId);
+            // Use lean() with IUser type to get plain object
             const user = yield user_model_1.User.findById(receiverId).lean();
             if (!user) {
                 console.warn(`User with ID ${receiverId} not found, skipping.`);
                 return {
-                    user: null, // Return null or handle the missing user case accordingly
+                    user: null,
                     conversationId: conversation._id,
                 };
             }
@@ -79,6 +84,7 @@ const getUserConversations = (req, res) => __awaiter(void 0, void 0, void 0, fun
             .send("An error occurred while fetching the conversations");
     }
 });
+// Export the conversation controller
 exports.ConversationController = {
     createConversation,
     getUserConversations,

@@ -13,6 +13,7 @@ async function startServer() {
     // Connect to MongoDB
     await mongoose.connect(config.data_base_url as string);
     console.log("Mongoose connected successfully! 🥫");
+   
 
     // Create an HTTP server
     const server = http.createServer(app);

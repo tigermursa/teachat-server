@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Conversation from "./conversation.model";
 import { User } from "../../user/user.model";
 
+// Define your IUser and IConversation interfaces
 interface IUser {
   _id: string;
   email: string;
@@ -13,6 +14,7 @@ interface IConversation {
   members: string[];
 }
 
+// Create conversation controller
 const createConversation = async (
   req: Request,
   res: Response
@@ -25,10 +27,11 @@ const createConversation = async (
       return res.status(400).send("Sender and receiver IDs are required");
     }
 
+    // Use lean() with IConversation type
     const existingConversation: IConversation | null =
       await Conversation.findOne({
         members: { $all: [senderId, receiverId] },
-      }).lean();
+      }).lean<IConversation>();
 
     if (existingConversation) {
       return res.status(200).json({ conversationId: existingConversation._id });
@@ -48,6 +51,7 @@ const createConversation = async (
   }
 };
 
+// Get user conversations controller
 const getUserConversations = async (
   req: Request,
   res: Response
@@ -59,9 +63,10 @@ const getUserConversations = async (
       return res.status(400).send("User ID is required");
     }
 
+    // Use lean() with IConversation type
     const conversations: IConversation[] = await Conversation.find({
       members: { $in: [userId] },
-    }).lean();
+    }).lean<IConversation[]>();
 
     const conversationUserData = await Promise.all(
       conversations.map(
@@ -75,12 +80,15 @@ const getUserConversations = async (
             (member) => member !== userId
           ) as string;
 
-          const user: IUser | null = await User.findById(receiverId).lean();
+          // Use lean() with IUser type to get plain object
+          const user: IUser | null = await User.findById(
+            receiverId
+          ).lean<IUser>();
 
           if (!user) {
             console.warn(`User with ID ${receiverId} not found, skipping.`);
             return {
-              user: null, // Return null or handle the missing user case accordingly
+              user: null,
               conversationId: conversation._id,
             };
           }
@@ -111,6 +119,7 @@ const getUserConversations = async (
   }
 };
 
+// Export the conversation controller
 export const ConversationController = {
   createConversation,
   getUserConversations,
