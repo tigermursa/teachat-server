@@ -11,7 +11,7 @@ const port = parseInt(config.port as string, 10) || 5000;
 async function startServer() {
   try {
     // Connect to MongoDB
-    await mongoose.connect(process.env.DATABASE_URL as string);
+    await mongoose.connect(config.data_base_url as string);
     console.log("Mongoose connected successfully! 🥫");
 
     // Create an HTTP server
