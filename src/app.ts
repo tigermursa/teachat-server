@@ -17,10 +17,11 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// CORS setup
+;
+
 app.use(
   cors({
-    origin: config.dev_client_url,
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );

@@ -24,7 +24,7 @@ function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // Connect to MongoDB
-            yield mongoose_1.default.connect(config_1.default.data_base_url);
+            yield mongoose_1.default.connect(process.env.DATABASE_URL);
             console.log("Mongoose connected successfully! 🥫");
             // Create an HTTP server
             const server = http_1.default.createServer(app_1.default);
@@ -38,7 +38,7 @@ function startServer() {
             // Initialize socket connections
             (0, socket_1.default)(io);
             // Start the server with the correct port type
-            server.listen(port, '0.0.0.0', () => {
+            server.listen(port, "0.0.0.0", () => {
                 console.log(`Server running at port ${port} ✨`);
             });
         }

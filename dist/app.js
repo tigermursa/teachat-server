@@ -19,9 +19,9 @@ const app = (0, express_1.default)();
 // Parserss
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
-// CORS setup
+;
 app.use((0, cors_1.default)({
-    origin: config_1.default.dev_client_url,
+    origin: "http://localhost:5173",
     credentials: true,
 }));
 // Application routes:

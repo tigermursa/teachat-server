@@ -11,9 +11,8 @@ const port = parseInt(config.port as string, 10) || 5000;
 async function startServer() {
   try {
     // Connect to MongoDB
-    await mongoose.connect(config.data_base_url as string);
+    await mongoose.connect(process.env.DATABASE_URL as string);
     console.log("Mongoose connected successfully! 🥫");
-   
 
     // Create an HTTP server
     const server = http.createServer(app);
@@ -21,7 +20,7 @@ async function startServer() {
     // Initialize Socket.io
     const io = new Server(server, {
       cors: {
-        origin: "*", 
+        origin: "*",
         methods: ["GET", "POST"],
       },
     });
@@ -30,7 +29,7 @@ async function startServer() {
     initializeSocket(io);
 
     // Start the server with the correct port type
-    server.listen(port, '0.0.0.0', () => {
+    server.listen(port, "0.0.0.0", () => {
       console.log(`Server running at port ${port} ✨`);
     });
   } catch (error) {
