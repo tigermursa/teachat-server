@@ -28,7 +28,7 @@ export async function login(
     const token = jwt.sign(
       { id: validUser._id },
       process.env.JWT_SECRET as string,
-      { expiresIn: process.env.EXPIRES_IN } // Token expires in  2d
+      { expiresIn: process.env.EXPIRES_IN }
     );
 
     // Set HTTP-only, Secure,
