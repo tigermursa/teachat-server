@@ -24,7 +24,7 @@ function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // Connect to MongoDB
-            yield mongoose_1.default.connect(process.env.DATABASE_URL);
+            yield mongoose_1.default.connect(config_1.default.data_base_url);
             console.log("Mongoose connected successfully! 🥫");
             // Create an HTTP server
             const server = http_1.default.createServer(app_1.default);

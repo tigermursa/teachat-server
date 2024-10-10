@@ -53,7 +53,7 @@ function signup(req, res, next) {
             // Save the user
             const newUser = yield auth_services_1.AuthService.createUser(userData);
             // Generate JWT token
-            const token = jsonwebtoken_1.default.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "2d" });
+            const token = jsonwebtoken_1.default.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN });
             // Set HTTP-only, Secure, and SameSite cookie
             res
                 .cookie("access_token", token, {

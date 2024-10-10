@@ -32,8 +32,7 @@ function login(req, res, next) {
                 throw new CustomError_1.CustomError("Wrong credentials", 401);
             }
             // Generate JWT token with expiration
-            const token = jsonwebtoken_1.default.sign({ id: validUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN } // Token expires in  2d
-            );
+            const token = jsonwebtoken_1.default.sign({ id: validUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.EXPIRES_IN });
             // Set HTTP-only, Secure,
             res
                 .cookie("access_token", token, {
