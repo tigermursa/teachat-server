@@ -1,4 +1,4 @@
 1) need to change the auth system like cookies base get data 
 2) use perfectly all env in the hosted link (done)
 3) have to make perfect easy backend
-4) have to create forget password logic 
+4) have to create forget password logic .
